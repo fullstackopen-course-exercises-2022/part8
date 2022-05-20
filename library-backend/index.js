@@ -99,7 +99,7 @@ const typeDefs = gql`
     }
     type Author {
         name: String!
-        born: Int!
+        born: Int
         id: ID!
     }
     type Query {
@@ -143,18 +143,18 @@ const resolvers = {
     Mutation: {
         createBooks: (root, args) => {
             const book = { ...args, id: uuid() }
-            const author = args.author
-            authors.filter(a => a.name === author === author).length &&
-            (authors = authors.concat({
-                name: authors.name,
-                born: null,
-                bookCount: book.length
-            }))
+            if(!authors.includes(book.author)) {
+                authors = authors.concat({
+                    name: book.author,
+                    born: null,
+                    id: uuid()
+                })
+            }
             books = books.concat(book)
             return book
         },
         editBorn: (root, args) => {
-            const findAuthor = authors.find(author => author.name === args.name)
+            const findAuthor = authors.find((author) => author.name === args.name)
             if(!findAuthor) {
                 return null
             }
